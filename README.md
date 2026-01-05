@@ -40,6 +40,17 @@ docker build -t ${IMAGE_REPO}:${IMAGE_TAG} .
 docker push ${IMAGE_REPO}:${IMAGE_TAG}
 ```
 
+### AWS ECR helper script
+Use `scripts/build_and_push_ecr.sh` to build, create the ECR repo if needed, log in, push, and print the final image URI.
+Prereqs: Docker, AWS CLI logged in with permissions for `ecr:*Repository` and `ecr:GetAuthorizationToken`.
+
+```bash
+# repo name required; tag defaults to "latest"
+AWS_REGION=us-east-1 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text) \
+  ./scripts/build_and_push_ecr.sh habitify latest
+```
+After success, the script echoes the pushed image (e.g., `123456789012.dkr.ecr.us-east-1.amazonaws.com/habitify:latest`) for Helm values.
+
 ## Helm chart (Kubernetes/EKS)
 Chart path: `chart/habitify`. Defaults: `service.port=8080`, ingress fields under `.ingress`, ingress off by default, serviceAccount creation on.
 
