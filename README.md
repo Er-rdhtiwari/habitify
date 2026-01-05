@@ -42,12 +42,13 @@ docker push ${IMAGE_REPO}:${IMAGE_TAG}
 
 ### AWS ECR helper script
 Use `scripts/build_and_push_ecr.sh` to build, create the ECR repo if needed, log in, push, and print the final image URI.
+Defaults: repo `habitify`, tag `latest`, region `us-east-1`, account `253484721204` (override via args/env).
 Prereqs: Docker, AWS CLI logged in with permissions for `ecr:*Repository` and `ecr:GetAuthorizationToken`.
 
 ```bash
-# repo name required; tag defaults to "latest"
+# Override as needed; args: [repo] [tag]
 AWS_REGION=us-east-1 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text) \
-  ./scripts/build_and_push_ecr.sh habitify latest
+  ./scripts/build_and_push_ecr.sh
 ```
 After success, the script echoes the pushed image (e.g., `123456789012.dkr.ecr.us-east-1.amazonaws.com/habitify:latest`) for Helm values.
 
