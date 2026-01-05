@@ -51,6 +51,14 @@ AWS_REGION=us-east-1 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Accoun
 ```
 After success, the script echoes the pushed image (e.g., `123456789012.dkr.ecr.us-east-1.amazonaws.com/habitify:latest`) for Helm values.
 
+### Cleanup ECR repo and image
+Use `scripts/cleanup_ecr_repo.sh` to delete the image tag (if present) and remove the ECR repository (force deletes any remaining images).
+```bash
+AWS_REGION=us-east-1 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text) \
+  ./scripts/cleanup_ecr_repo.sh habitify latest
+```
+Echoed checkpoints confirm each step; the script exits harmlessly if the repo is already gone.
+
 ## Helm chart (Kubernetes/EKS)
 Chart path: `chart/habitify`. Defaults: `service.port=8080`, ingress fields under `.ingress`, ingress off by default, serviceAccount creation on.
 
